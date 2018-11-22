@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView, Button } from 'react-native';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { Dimensions, Platform, View, ScrollView, Text, StatusBar, SafeAreaView, Button } from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
 import SliderEntry from '../components/SliderEntry';
 import styles, { colors } from '../styles/index.style';
 import { ENTRIES1, ENTRIES2 } from '../static/entries';
-import { scrollInterpolators, animatedStyles } from '../utils/animations';
-
-import { withNavigation } from 'react-navigation';
-
 
 const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
@@ -25,85 +21,42 @@ export default class GalleryChoice extends Component {
     }
 
     _renderItem ({item, index}) {
-        <Text>{this.props}</Text>
-        return <SliderEntry data={item} even={(index + 1) % 2 === 0} navigation={this.navi} />;
-    }
-
-    _renderItemWithParallax ({item, index}, parallaxProps) {
-        return (
-            <SliderEntry
-              data={item}
-              even={(index + 1) % 2 === 0}
-              parallax={true}
-              parallaxProps={parallaxProps}
-              navigation={this.props.navigation}
-            />
-        );
-    }
-
-    _renderLightItem ({item, index}) {
-        return <SliderEntry data={item} even={false} />;
+        return <SliderEntry data={item} even={(index + 1) % 2 === 0} navigation={this.props.navigation} />;
     }
 
     layoutExample (number, title, type) {
         const isTinder = type === 'tinder';
-        console.log('layoutexample');
+        const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
         return (
             
-            <View style={[styles.exampleContainer, isTinder ? styles.exampleContainerDark : styles.exampleContainerLight]}>
-                <Button
-                title="Go to Details"
-                onPress={() => this.props.navigation.navigate('GalleryDetail')}
-                />
-                <Text style={[styles.title, isTinder ? {} : styles.titleDark]}>SELFIE E GANHE</Text>
-                <Text style={[styles.subtitle, isTinder ? {} : styles.titleDark]}>{title}</Text>
-                <Carousel
+            <View  style={{ flex: 1 }} >
+                {/* <Text style={[styles.subtitle, isTinder ? {} : styles.titleDark]}>{title}</Text> */}
+                {/* <Carousel
                   data={isTinder ? ENTRIES2 : ENTRIES1}
-                  renderItem={isTinder ? this._renderLightItem : this._renderItem}
+                  renderItem={this._renderItem.bind(this) }
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
-                  containerCustomStyle={styles.slider}
+                  containerCustomStyle={{ flex: 1 }}
+                  slideStyle={{ flex: 1 }}
                   contentContainerCustomStyle={styles.sliderContentContainer}
                   layout={type}
                   loop={true}
-                />
+                  navigation={this.props.navigation}
+                /> */}
+                <Carousel
+                    data={isTinder ? ENTRIES2 : ENTRIES1}
+                    renderItem={this._renderItem.bind(this)}
+                    sliderWidth={viewportWidth}
+                    itemWidth={viewportWidth}
+                    slideStyle={{ width: viewportWidth }}
+                    inactiveSlideOpacity={1}
+                    inactiveSlideScale={1}
+                    navigation={this.props.navigation}
+                    />
             </View>
         );
     }
-
-    customExample (number, title, refNumber, renderItemFunc) {
-        const isEven = refNumber % 2 === 0;
-
-        // Do not render examples on Android; because of the zIndex bug, they won't work as is
-        return !IS_ANDROID ? (
-            <View style={[styles.exampleContainer, isEven ? styles.exampleContainerDark : styles.exampleContainerLight]}>
-                <Text style={[styles.title, isEven ? {} : styles.titleDark]}>{`Example ${number}`}</Text>
-                <Text style={[styles.subtitle, isEven ? {} : styles.titleDark]}>{title}</Text>
-                <Carousel
-                  data={isEven ? ENTRIES2 : ENTRIES1}
-                  renderItem={renderItemFunc}
-                  sliderWidth={sliderWidth}
-                  itemWidth={itemWidth}
-                  containerCustomStyle={styles.slider}
-                  contentContainerCustomStyle={styles.sliderContentContainer}
-                  scrollInterpolator={scrollInterpolators[`scrollInterpolator${refNumber}`]}
-                  slideInterpolatedStyle={animatedStyles[`animatedStyles${refNumber}`]}
-                  useScrollView={true}
-                />
-            </View>
-        ) : false;
-    }
-
-    // get gradient () {
-    //     return (
-    //         <LinearGradient
-    //           colors={[colors.background1, colors.background2]}
-    //           startPoint={{ x: 1, y: 0 }}
-    //           endPoint={{ x: 0, y: 1 }}
-    //           style={styles.gradient}
-    //         />
-    //     );
-    // }
 
     render () {
         // const example1 = this.mainExample(4, 'Default layout | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots');
@@ -113,20 +66,12 @@ export default class GalleryChoice extends Component {
 
         return (
             <SafeAreaView style={styles.safeArea}>
-                <View style={styles.container}>
-                    <StatusBar
-                      translucent={true}
-                      backgroundColor={'rgba(0, 0, 0, 0.3)'}
-                      barStyle={'light-content'}
-                    />
+                <View style={styles.container}>                    
                     <ScrollView
                       style={styles.scrollview}
                       scrollEventThrottle={200}
                       directionalLockEnabled={true}
-                    >
-                        {/* { example1 } 
-                        { example2 }
-                        { example3 } */}
+                    >                        
                         { example4 }
                     </ScrollView>
                 </View>

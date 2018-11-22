@@ -32,23 +32,19 @@ export default class SliderEntry extends Component {
               {...parallaxProps}
             />
         ) : (
-            <Image
-              source={{ uri: illustration }}
-              style={styles.image}
-            />
+                <Image
+                source={{ uri: illustration }}
+                style={styles.image}
+                />
         );
     }
 
     pressRow() {
-        this.props.navigation.navigate('Details');
+        this.props.navigation.navigate('GalleryDetail');
     }
 
     render () {
-        const { navigation, data: { title, subtitle }, even } = this.props;
-
-        console.log('----');
-        console.log('props:', this.props);
-        console.log('navigation:', navigation);
+        const { navigation, data: { title, subtitle, illustration }, even } = this.props;
 
         const uppercaseTitle = title ? (
             <Text
@@ -63,7 +59,7 @@ export default class SliderEntry extends Component {
             <TouchableOpacity
               activeOpacity={1}
               style={styles.slideInnerContainer}
-              onPress={() => { this.pressRow(); }}
+              onPress={() => { navigation.navigate('GalleryDetail', { title, subtitle, illustration }) }}
               >
                 <View style={styles.shadow} />
                 <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
@@ -78,10 +74,6 @@ export default class SliderEntry extends Component {
                     >
                         { subtitle }
                     </Text>
-                    <Button
-                        title="Go to Details"
-                        onPress={() => navigation.navigate('GalleryDetail')}
-                        />
                 </View>
             </TouchableOpacity>
         );

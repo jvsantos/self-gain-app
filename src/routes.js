@@ -4,23 +4,24 @@ import Main from './pages/main';
 import GalleryChoice from './pages/galleryChoice';
 import GalleryDetail from './pages/galleryDetail';
 
-const navigationOptions = {
-    navigationOptions: {
-        headerStyle: {
-            backgroundColor: "#DA552F"
-        },
-        headrTintColor: "#fff"
-    }
-};
-
 export default createStackNavigator (
     {
-        GalleryChoice,
-        GalleryDetail,
-        Main
-    }, 
-    navigationOptions,
+        Gallery: {
+            screen: GalleryChoice,
+            navigationOptions: ({ navigation }) => ({
+                headr: null
+              }),
+        },
+        GalleryDetail: {
+            screen: GalleryDetail,
+            navigationOptions: ({ navigation }) => ({
+                title: `Categoria ${navigation.state.params.title}`,
+                subtitle: navigation.state.params.subtitle,
+                illustration: navigation.state.params.illustration
+              }),
+        },
+    },    
     {
-        initialRouteName: "GalleryDetail"
+        initialRouteName: "Gallery"
     }
 );
